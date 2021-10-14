@@ -1,0 +1,9 @@
+.content{
+  grid-area: c;
+  background-color: maroon;
+  color: black;
+  padding: 10px;
+}
+.posts{
+ color: white;
+}
