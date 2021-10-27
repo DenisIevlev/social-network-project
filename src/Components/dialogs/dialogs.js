@@ -1,6 +1,6 @@
 import React from 'react';
 import classes from './dialogs.module.css';
-import DialogItem from './dialogitem/dialogitem';
+import DialogsItem from './dialogsItem/dialogsItem';
 import Message from './message/message';
 
 const Dialogs = (props) => {
@@ -18,7 +18,7 @@ const Dialogs = (props) => {
     props.updateNewMessage(value);
   }
   let dialogsElements = state.dialogsData.map(element => {
-    return <DialogItem id={element.id} name={element.name} />
+    return <DialogsItem id={element.id} name={element.name} />
   });
 
   let messagesElements = state.messagesData.map(element => {
