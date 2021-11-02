@@ -1,6 +1,7 @@
 import React from 'react';
-import {followActionCreator, unfollowActionCreator, setUsersActionCreator, setCurrentPageActionCreator, setTotalUsersCountActionCreator, toggleIsFetching} from '../../redux/usersReducer';
-import {connect} from 'react-redux';
+import { followActionCreator, unfollowActionCreator, setUsersActionCreator, 
+         setCurrentPageActionCreator, setTotalUsersCountActionCreator, toggleIsFetching } from '../../redux/usersReducer';
+import { connect } from 'react-redux';
 import UsersComponent from './usersComponent';
 import Preloader from '../common/preloader/preloader';
 import * as axios from 'axios';
@@ -17,9 +18,9 @@ class UsersAPIComponent extends React.Component {
   }
 
   onPageChanged = (page) => {
-      this.props.toggleIsFetching(true);
-      this.props.setCurrentPageActionCreator(page);
-   axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`).then(response => {
+    this.props.toggleIsFetching(true);
+    this.props.setCurrentPageActionCreator(page);
+    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`).then(response => {
       this.props.toggleIsFetching(false);
       this.props.setUsersActionCreator(response.data.items);
     })
@@ -27,39 +28,35 @@ class UsersAPIComponent extends React.Component {
 
   render() {
     return <>
-    {this.props.isFetching ? <Preloader/> : null}
-    <UsersComponent 
-    totalUsersCount={this.props.totalUsersCount}
-    pageSize={this.props.pageSize} 
-    currentPage={this.props.currentPage}
-    onPageChanged={this.onPageChanged} 
-    users={this.props.users}
-    followActionCreator={this.props.followActionCreator}
-    unfollowActionCreator={this.props.unfollowActionCreator}/>
+      {this.props.isFetching ? <Preloader /> : null}
+      <UsersComponent
+        totalUsersCount={this.props.totalUsersCount}
+        pageSize={this.props.pageSize}
+        currentPage={this.props.currentPage}
+        onPageChanged={this.onPageChanged}
+        users={this.props.users}
+        followActionCreator={this.props.followActionCreator}
+        unfollowActionCreator={this.props.unfollowActionCreator} />
     </>
   }
 }
 
 let mapStateToProps = (state) => {
   return {
-      users: state.usersPage.users,
-      pageSize: state.usersPage.pageSize,
-      totalUsersCount: state.usersPage.totalUsersCount,
-      currentPage: state.usersPage.currentPage,
-      isFetching: state.usersPage.isFetching
-  }
-}  
-
-let mapDispatchToProps = (dispatch) => {
-  return {
-        followActionCreator: (userId) => dispatch(followActionCreator(userId)),
-        unfollowActionCreator: (userId) => dispatch(unfollowActionCreator(userId)),
-        setUsersActionCreator: (users) => dispatch(setUsersActionCreator(users)),
-        setCurrentPageActionCreator: (currentPage) => dispatch(setCurrentPageActionCreator(currentPage)),
-        setTotalUsersCountActionCreator: (totalCount) => dispatch(setTotalUsersCountActionCreator(totalCount)),
-        toggleIsFetching: (isFetching) => dispatch(toggleIsFetching(isFetching))
-        
+    users: state.usersPage.users,
+    pageSize: state.usersPage.pageSize,
+    totalUsersCount: state.usersPage.totalUsersCount,
+    currentPage: state.usersPage.currentPage,
+    isFetching: state.usersPage.isFetching
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersAPIComponent);  
+export default connect(mapStateToProps,
+  {
+  followActionCreator,
+  unfollowActionCreator,
+  setUsersActionCreator,
+  setCurrentPageActionCreator,
+  setTotalUsersCountActionCreator,
+  toggleIsFetching
+  })(UsersAPIComponent);

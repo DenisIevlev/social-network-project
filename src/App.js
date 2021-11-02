@@ -1,5 +1,5 @@
 import './App.css';
-import Profile from './Components/profile/profile';
+import ProfileContainer from './Components/profile/profileContainer';
 import Header from './Components/header/header';
 import Navbar from './Components/navbar/navbar';
 import DialogsContainer from './Components/dialogs/dialogsContainer';
@@ -18,7 +18,7 @@ const App = (props) => {
         <Navbar state={props.state.sidebar} />
         <div className={classes.item}>
           <Route path="/messages" render={() => <DialogsContainer/>} />
-          <Route path="/profile" render={() => <Profile/>} />
+          <Route path="/profile" render={() => <ProfileContainer/>} />
           <Route path="/news" render={() => <News />} />
           <Route path="/music" render={() => <Music />} />
           <Route path="/users" component={() => <UsersContainer/>}/>

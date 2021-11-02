@@ -2,3 +2,13 @@
   max-width: 50%;
   font-size: 15px;
 }
+.ava{
+  width: 35px;
+  height: 35px;
+  border-radius: 20px;
+  margin-bottom: -10px;
+
+}
+.fullName{
+  margin-left: 10px;
+}
