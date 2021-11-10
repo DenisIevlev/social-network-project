@@ -2,6 +2,7 @@ import React from "react";
 import {NavLink} from 'react-router-dom';
 import classes from './user.module.css';
 import userPhoto from '../../assets/img/user.png';
+import {usersAPI} from '../../api/api';
 
 
 let UsersComponent = (props) => {
@@ -25,12 +26,31 @@ let UsersComponent = (props) => {
           props.users.map(user => <div key={user.id}>
             <span>
               <div> 
-                <NavLink to={'/profile/' + user.ud}>
+                <NavLink to={'/profile/' + user.id}>
                 <img className={classes.photoURL} src={user.photos.small != null ? user.photos.small : userPhoto} />
                 </NavLink></div>
               <div>
-                {user.followed ? <button onClick={() => props.unfollowActionCreator(user.id)}>Unfollow</button>
-                  : <button onClick={() => props.followActionCreator(user.id)}>Follow</button>}
+                {user.followed 
+                  ? <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {
+                    props.toggleIsFollowingProgress(true, user.id);
+                    usersAPI.unfollow(user.id)
+                    .then(response => {
+                      if(response.resultCode == 1) {
+                        props.unfollowActionCreator(user.id)
+                      };
+                      props.toggleIsFollowingProgress(false, user.id);
+                    })
+                  }}>Unfollow</button>
+                  : <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {
+                    props.toggleIsFollowingProgress(false, user.id);
+                    usersAPI.follow(user.id)
+                    .then(response => {
+                      if(response.resultCode == 0) {
+                        props.followActionCreator(user.id)
+                      };
+                      props.toggleIsFollowingProgress(true, user.id);
+                    })
+                     }}>Follow</button>}
 
               </div>
             </span>

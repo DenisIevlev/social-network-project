@@ -12,3 +12,6 @@
 .fullName{
   margin-left: 10px;
 }
+.checkedButton{
+  border: none; outline: none; 
+}
