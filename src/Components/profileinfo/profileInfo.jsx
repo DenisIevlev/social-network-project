@@ -1,9 +1,5 @@
 import React from 'react';
-import Ava from '../ava/ava';
 import Preloader from '../common/preloader/preloader';
-import FindJob from '../common/findJob/findJob';
-import check from '../../assets/img/checked.png';
-import cancel from '../../assets/img/cancel.png';
 import classes from './profileInfo.module.css';
 
 const ProfileInfo = (props) => {
@@ -20,9 +16,6 @@ const ProfileInfo = (props) => {
         <span>About me: <br/> 
                         {props.profile.aboutMe}</span> <br/> 
                         <br/> 
-        <span>Searching for a job: {props.checked ? <button onClick={() => props.cancelActionCreator()}><FindJob src={cancel}/></button> : 
-        <button onClick={() => props.checkedActionCreator()}><FindJob src={check}/></button>}</span> <br/> <br/>
-
         <span>Contacts: <br/> 
                         {props.profile.contacts.facebook}<br/>
                         {props.profile.contacts.vk}<br/>

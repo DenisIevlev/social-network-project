@@ -1,4 +1,3 @@
-import React from 'react';
 import classes from './friendsList.module.css';
 const FriendsList = (props) => {
   return(

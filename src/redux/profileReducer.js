@@ -1,8 +1,8 @@
+import {usersAPI} from '../api/api';
+
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
-const CHECKED = 'CHECKED';
-const CANCEL = 'CANCEL';
 
 let initialState = {
   posts: [
@@ -40,16 +40,6 @@ const profileReducer = (state = initialState, action) => {
           profile: action.profile
 
         }
-        case CHECKED:
-          return stateCopy = {
-          ...state,
-          checked: true
-          }
-        case CANCEL: 
-        return stateCopy = {
-          ...state,
-          checked: false
-        }
     default:
       return state;
   }
@@ -70,14 +60,12 @@ export const setUserProfileActionCreator = (profile) => ({
   profile
 })
 
-export const checkedActionCreator = (checked) => ({
-  type: CHECKED,
-  checked
-})
-
-export const cancelActionCreator = (checked) => ({
-  type: CANCEL,
-  checked
-})
+export const setUserProfile = (userId) => {
+     return (dispatch) => {
+     usersAPI.getUsersId(userId).then(response => {
+     dispatch(setUserProfileActionCreator(response));
+  })
+}
+}
 
 export default profileReducer;

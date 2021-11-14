@@ -8,6 +8,7 @@ import News from './Components/news/news';
 import UsersContainer from './Components/users/usersContainer';
 import Settings from './Components/settings/settings';
 import Footer from './Components/footer/footer';
+import Login from './Components/header/Login/login';
 import {Route} from "react-router-dom";
 import classes from './Components/dialogs/dialogs.module.css';
 
@@ -23,6 +24,7 @@ const App = (props) => {
           <Route path="/music" render={() => <Music />} />
           <Route path="/users" component={() => <UsersContainer/>}/>
           <Route path="/settings" component={() => <Settings />} />
+          <Route path="/login" component={() => <Login/>} />
         </div>
         <Footer />
       </div>
