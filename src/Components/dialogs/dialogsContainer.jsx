@@ -1,5 +1,5 @@
 import Dialogs from './dialogs';
-import { addMessageCreator, updateNewMessage } from '../../redux/dialogsReducer';
+import { addMessageCreator } from '../../redux/dialogsReducer';
 import {connect} from 'react-redux';
 import {withAuthRedirect} from '../../hoc/withAuthRedirect';
 import { compose } from 'redux';
@@ -13,8 +13,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
       return {
-          updateNewMessage: (value) => dispatch(updateNewMessage(value)),
-          sendMessage: () => dispatch(addMessageCreator())
+          sendMessage: (newMessageText) => dispatch(addMessageCreator(newMessageText))
       }
 }
 

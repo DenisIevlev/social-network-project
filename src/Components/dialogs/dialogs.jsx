@@ -2,23 +2,16 @@ import React from 'react';
 import classes from './dialogs.module.css';
 import DialogsItem from './dialogsItem/dialogsItem';
 import Message from './message/message';
+import {reduxForm} from 'redux-form';
+import AddMessageForm from './addMessageForm/addMessageForm';
 
 const Dialogs = (props) => {
 
   let state = props.messagesPage;
 
-  let newElementMessage = React.createRef();
-
-  let addMessage = () => {
-    props.sendMessage();
+  let addNewMessage = (values) => {
+    props.sendMessage(values.newMessageText);
   }
-
-  let onMessageChange = (event) => {
-    let value = event.target.value;
-    props.updateNewMessage(value);
-  }
-
-
 
   let dialogsElements = state.dialogsData.map(element => {
     return <DialogsItem id={element.id} name={element.name} />
@@ -28,8 +21,6 @@ const Dialogs = (props) => {
     return <Message id={element.id} message={element.message} />
   });
 
-  let newMessageText = state.newMessageText;
-
   return (
     <div className={classes.dialogs}>
       <div className={classes.dialogsItems}>
@@ -37,12 +28,14 @@ const Dialogs = (props) => {
       </div>
       <div className={classes.messages}>
         {messagesElements}
-        <div className={classes.sendMessage}>
-        <textarea onChange={onMessageChange} ref={newElementMessage} value={newMessageText}></textarea>
-        <button onClick={addMessage}>Send message</button>
-      </div>
+        <AddMessageFormRedux onSubmit={addNewMessage}/>
       </div>
     </div>
   );
 }
+
+const AddMessageFormRedux = reduxForm({
+  form: 'messageAddForm'
+})(AddMessageForm);
+
 export default Dialogs;
