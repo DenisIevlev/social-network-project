@@ -2,7 +2,7 @@ import classes from './navbar.module.css';
 import { NavLink } from 'react-router-dom';
 import FriendsList from './friendsList/friendsList';
 const Navbar = (props) => {
-  let friendsList = props.state.friendsList.map(element => {
+  let friendsList = props.friendsList.map(element => {
     return <FriendsList id={element.id} name={element.name} src={element.href} />
   })
   return (

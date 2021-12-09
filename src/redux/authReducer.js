@@ -1,23 +1,24 @@
-import {usersAPI} from '../api/api';
+import { authAPI } from '../api/api';
+import { stopSubmit } from 'redux-form';
 
 const SET_USER_DATA = 'SET_USER_DATA';
-
 
 let initialState = {
   userId: null,
   email: null,
   login: null,
+  password: null,
+  rememberMe: false,
   isAuth: false
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_USER_DATA: 
-    return {
-      ...state,
-      ...action.data,
-      isAuth: true
-    }
+    case SET_USER_DATA:
+      return {
+        ...state,
+        ...action.payload
+      }
     default:
       return state;
   }
@@ -25,20 +26,44 @@ const authReducer = (state = initialState, action) => {
 
 export default authReducer;
 
-export const setAuthUserDataActionCreator = (userId, email, login) => {
+export const setAuthUserDataActionCreator = (userId, email, login, isAuth) => {
   return {
     type: SET_USER_DATA,
-    data: { userId, email, login }
+    payload: { userId, email, login, isAuth }
   }
 }
 
 export const setAuthUserData = () => {
   return (dispatch) => {
-    usersAPI.authMe().then(response => {
+    return authAPI.authMe().then(response => {
       if (response.resultCode === 0) {
         let { id, email, login } = response.data;
-       dispatch(setAuthUserDataActionCreator(id, email, login));
+        dispatch(setAuthUserDataActionCreator(id, email, login, true));
       }
     })
   }
 }
+
+export const loginUserData = (email, password, rememberMe) => {
+  return (dispatch) => {
+    authAPI.login(email, password, rememberMe).then(response => {
+      if (response.resultCode === 0) {
+        dispatch(setAuthUserData());
+      } else {
+        let message = response.messages.length > 0 ? response.messages[0] : 'Authorization error';
+        dispatch(stopSubmit('login', { _error: message }));
+      }
+    })
+  }
+}
+
+export const logoutUserData = () => {
+  return (dispatch) => {
+    authAPI.logout().then(response => {
+      if (response.resultCode === 0) {
+        dispatch(setAuthUserDataActionCreator(null, null, null, false));
+      }
+    })
+  }
+}
+
