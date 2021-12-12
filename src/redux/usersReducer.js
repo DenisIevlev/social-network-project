@@ -127,23 +127,12 @@ export const toggleIsFollowingProgress = (isFetching, userId) => {
 export const getUsers = (currentPage, pageSize) => {
   return (dispatch) => {
   dispatch(toggleIsFetching(true));
-  usersAPI.getUsers(currentPage, pageSize)
-  .then(response => {
-    dispatch(toggleIsFetching(false));
-    dispatch(setUsersActionCreator(response.items));
-    dispatch(setTotalUsersCountActionCreator(response.totalCount));
-  })
- }
-}
-
-export const setCurrentPageChanged = (currentPage, pageSize) => {
-  return (dispatch) => {
-  dispatch(toggleIsFetching(true));
   dispatch(setCurrentPageActionCreator(currentPage));
   usersAPI.getUsers(currentPage, pageSize)
   .then(response => {
     dispatch(toggleIsFetching(false));
     dispatch(setUsersActionCreator(response.items));
+    dispatch(setTotalUsersCountActionCreator(response.totalCount));
   })
  }
 }
