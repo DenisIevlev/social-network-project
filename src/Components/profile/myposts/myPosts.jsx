@@ -6,7 +6,7 @@ import {reduxForm} from 'redux-form';
 
 
 
-const MyPosts = (props) => {
+const MyPosts = React.memo(props => {
   let postElements = props.posts.map(element => {
     return <Post id={element.id} message={element.message} count={element.likesCount} />
   })
@@ -22,7 +22,7 @@ const MyPosts = (props) => {
       {postElements}
     </div>
   );
-}
+});
 
 const AddPostFormRedux = reduxForm({
   form: 'newPostText'

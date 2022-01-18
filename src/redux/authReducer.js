@@ -34,36 +34,33 @@ export const setAuthUserDataActionCreator = (userId, email, login, isAuth) => {
 }
 
 export const setAuthUserData = () => {
-  return (dispatch) => {
-    return authAPI.authMe().then(response => {
+  return async (dispatch) => {
+    let response = await authAPI.authMe(); 
       if (response.resultCode === 0) {
         let { id, email, login } = response.data;
         dispatch(setAuthUserDataActionCreator(id, email, login, true));
       }
-    })
   }
 }
 
 export const loginUserData = (email, password, rememberMe) => {
-  return (dispatch) => {
-    authAPI.login(email, password, rememberMe).then(response => {
+  return async (dispatch) => {
+    let response = await authAPI.login(email, password, rememberMe);
       if (response.resultCode === 0) {
         dispatch(setAuthUserData());
       } else {
         let message = response.messages.length > 0 ? response.messages[0] : 'Authorization error';
         dispatch(stopSubmit('login', { _error: message }));
       }
-    })
   }
 }
 
 export const logoutUserData = () => {
-  return (dispatch) => {
-    authAPI.logout().then(response => {
+  return async (dispatch) => {
+    let response = await authAPI.logout();
       if (response.resultCode === 0) {
         dispatch(setAuthUserDataActionCreator(null, null, null, false));
       }
-    })
   }
 }
 
