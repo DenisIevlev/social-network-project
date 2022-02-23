@@ -7,11 +7,11 @@ import {Textarea} from '../../common/FormControls/FormControls';
 const maxLength60 = maxLengthCreator(60);
 const minLength3 = minLengthCreator(3);
 
-const AddMessageForm = (props) => {
+const AddMessageForm = ({handleSubmit}) => {
   return (
-    <form onSubmit={props.handleSubmit} className={classes.sendMessage}>
-      <div> <Field component={Textarea} name="newMessageText" placeholder="Enter your message" validate={[required, maxLength60, minLength3]}/></div>
-       <div><button >Send message</button></div>
+    <form onSubmit={handleSubmit} className={classes.sendMessage}>
+      <div> <Field classsName={classes.textarea} component={Textarea} name="newMessageText" placeholder="Enter your message" validate={[required, maxLength60, minLength3]}/></div>
+       <div><button>Send message</button></div>
       </form>
   )
 }

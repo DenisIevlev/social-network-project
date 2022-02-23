@@ -1,8 +1,10 @@
 import {profileAPI} from '../api/api';
+import {stopSubmit} from 'redux-form';
 
 const ADD_POST = 'ADD-POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
 const SET_STATUS = 'SET_STATUS';
+const UPDATE_PHOTO_SUCCESS = 'UPDATE_PHOTO_SUCCESS';
 
 let initialState = {
   posts: [
@@ -18,7 +20,7 @@ const profileReducer = (state = initialState, action) => {
   let newPost;
 
   switch (action.type) {
-    case ADD_POST: 
+    case ADD_POST:
       newPost = {
         id: 3,
         message: action.newPostText,
@@ -28,18 +30,23 @@ const profileReducer = (state = initialState, action) => {
         ...state,
         posts: [...state.posts, newPost],
       };
-      case SET_USER_PROFILE:
-        return stateCopy = {
-          ...state,
-          profile: action.profile
+    case SET_USER_PROFILE:
+      return stateCopy = {
+        ...state,
+        profile: action.profile
 
-        }
-        case SET_STATUS: {
-          return stateCopy = {
-            ...state,
-            status: action.status
-          }
-        }
+      }
+    case SET_STATUS: {
+      return stateCopy = {
+        ...state,
+        status: action.status
+      }
+    }
+    case UPDATE_PHOTO_SUCCESS:
+      return stateCopy = {
+        ...state,
+        profile: { ...state.profile, photos: action.photos }
+      }
     default:
       return state;
   }
@@ -62,29 +69,44 @@ export const setStatus = (status) => ({
   status
 })
 
-export const setUserProfile = (userId) => {
-     return (dispatch) => {
-     profileAPI.getProfile(userId).then(response => {
-     dispatch(setUserProfileActionCreator(response));
-  })
- }
-}
 
-export const getStatus = (userId) => {
-  return (dispatch) => {
-    profileAPI.getStatus(userId).then(response => {
-      dispatch(setStatus(response));
-    })
+export const updatePhotoSuccess = (photos) => ({
+  type: UPDATE_PHOTO_SUCCESS,
+  photos
+})
+
+export const savePhoto = (file) => async (dispatch) => {
+  let response = await profileAPI.savePhoto(file);
+  if (response.resultCode === 0) {
+    dispatch(updatePhotoSuccess(response.data.data.photos));
   }
 }
 
-export const updateStatus = (status) => {
-  return (dispatch) => {
-    profileAPI.updateStatus(status).then(response => {
-      if(response.resultCode === 0) {
-      dispatch(setStatus(status));
-      }
-    })
+export const saveProfile = (profile) => async (dispatch, getState) => {
+  const userId = getState().auth.userId;
+  const response = await profileAPI.saveProfile(profile);
+  if (response.resultCode === 0) {
+    dispatch(setUserProfile(userId));
+  } else {
+    dispatch(stopSubmit('edit-profile', { _error: response.messages[0] }));
+    return Promise.reject(response.messages[0]);
+  }
+}
+
+export const setUserProfile = (userId) => async (dispatch) => {
+  let response = await profileAPI.getProfile(userId);
+  dispatch(setUserProfileActionCreator(response));
+}
+
+export const getStatus = (userId) => async (dispatch) => {
+  let response = await profileAPI.getStatus(userId);
+  dispatch(setStatus(response));
+}
+
+export const updateStatus = (status) => async (dispatch) => {
+  let response = await profileAPI.updateStatus(status);
+  if (response.resultCode === 0) {
+    dispatch(setStatus(status));
   }
 }
 

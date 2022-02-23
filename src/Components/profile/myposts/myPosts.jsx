@@ -1,14 +1,12 @@
 import React from 'react';
 import Post from './post/post';
 import AddPostForm from './addPostForm/addPostForm';
-import classes from './myPosts.module.css';
 import {reduxForm} from 'redux-form';
-
 
 
 const MyPosts = React.memo(props => {
   let postElements = props.posts.map(element => {
-    return <Post id={element.id} message={element.message} count={element.likesCount} />
+    return <Post key={element.id} message={element.message} count={element.likesCount} />
   })
   
   let addPostMessage = (values) => {

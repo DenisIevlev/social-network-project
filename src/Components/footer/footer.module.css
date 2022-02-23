@@ -2,6 +2,9 @@
   grid-area: f;
   background-color: black;
   color: white;
-  height: 5vh;
+  padding: 15px;
+}
+.text{
   text-align: center;
+  margin: 0 auto;
 }

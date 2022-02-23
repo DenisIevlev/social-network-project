@@ -1,5 +1,5 @@
 .item{
- background-color: maroon;
+ background-color: #4e3854;
 }
 .dialogs{
  display: grid;
@@ -16,4 +16,14 @@
 }
 .sendMessage{
     padding-top: 50px;
+}
+.textarea{
+    overflow: auto;
+}
+.link{
+    color: white;
+    text-decoration: none;
+}
+.link:hover{
+    color: black;
 }

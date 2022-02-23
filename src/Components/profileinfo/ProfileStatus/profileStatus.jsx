@@ -24,7 +24,7 @@ useEffect(() => {
       <>
         {!editMode ?
           <div>
-            <span onDoubleClick={activateEditStatus}> Status: {status}</span>
+            <span onDoubleClick={activateEditStatus}> <b>Status:</b> {status}</span>
           </div> : <div>
             <input onChange={onStatusChange} onBlur={deactivateEditMod}  autoFocus={true} value={profileStatus}></input>
           </div>

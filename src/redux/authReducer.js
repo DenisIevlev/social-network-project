@@ -1,7 +1,7 @@
-import { authAPI } from '../api/api';
-import { stopSubmit } from 'redux-form';
+import {authAPI} from '../api/api';
+import {stopSubmit} from 'redux-form';
 
-const SET_USER_DATA = 'SET_USER_DATA';
+const SET_USER_DATA = 'utopia-network/auth/SET_USER_DATA';
 
 let initialState = {
   userId: null,
@@ -33,18 +33,15 @@ export const setAuthUserDataActionCreator = (userId, email, login, isAuth) => {
   }
 }
 
-export const setAuthUserData = () => {
-  return async (dispatch) => {
+export const setAuthUserData = () => async (dispatch) => {
     let response = await authAPI.authMe(); 
       if (response.resultCode === 0) {
         let { id, email, login } = response.data;
         dispatch(setAuthUserDataActionCreator(id, email, login, true));
       }
   }
-}
 
-export const loginUserData = (email, password, rememberMe) => {
-  return async (dispatch) => {
+export const loginUserData = (email, password, rememberMe) => async (dispatch) => {
     let response = await authAPI.login(email, password, rememberMe);
       if (response.resultCode === 0) {
         dispatch(setAuthUserData());
@@ -53,14 +50,11 @@ export const loginUserData = (email, password, rememberMe) => {
         dispatch(stopSubmit('login', { _error: message }));
       }
   }
-}
 
-export const logoutUserData = () => {
-  return async (dispatch) => {
+export const logoutUserData = () => async (dispatch) => {
     let response = await authAPI.logout();
       if (response.resultCode === 0) {
         dispatch(setAuthUserDataActionCreator(null, null, null, false));
       }
   }
-}
 
